@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<heading></heading>
+<body>
+<h2>Cerebral WM Score</h2>
+<p id='first'></p>
+
+<script>
+var MulPV2='begin';
+document.getElementById('first').innerHTML='MulPV2= '+MulPV2;
+</script>
+<fieldset>
+  <legend>Cystic Lesions</legend>
+  <input type='radio' name='tn' value='None' id='MPV3'></input>
+  <label for='tn'>None</label>
+  <input type='radio' name='tn' value='Focal Unilateral' id='MPV3'></input>
+  <label for='tn'>Focal Unilateral</label>
+  <input type='radio' name='tn' value='Focal Bilateral' id='MPV3'></input>
+  <label for='tn'>Focal Bilateral</label>
+  <input type='radio' name='tn' value='Extensive Unilateral' id='MPV3'></input>
+  <label for='tn'>Extensive Unilateral</label>
+  <input type='radio' name='tn' value='Extensive Bilateral' id='MPV3'></input>
+  <label for='tn'>Extensive Bilateral</label>
+</fieldset>
+<h2>results</h2>
+<p id='second'></p>
+<script>
+var MulPV=document.getElementsById('MPV3');
+// for(var i=0;i<MulPV.length;i++){
+//  MulPV2=MulPV[i].onclick;
+//  document.getElementById('second').innerHTML='MulPV2= '+MulPV2;
+// }
+for (var i=0; i<document.getElementsById('MPV3').length;i++) {
+  if(document.getElementsById('MPV3')[i].checked){
+    MulPV2=document.getElementsById('MPV3')[i].value;
+    break;}
+   }
+   document.getElementById('second').innerHTML='MulPV2= '+MulPV2;
+</script>
+</body>
+</html>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Panda Protocol">
+  <meta name="keywords" content="pediatric,radiology,term mri, IVH, premature brain">
+  <meta name="author" content="Steven Ross">
+
+  <title>MR Assessment Tool to Define Brain Abnormalities in Very Preterm Infants at Term</title>
+  <link rel="stylesheet" type="text/css" href="styles.css"/>
+</head>
+<body>
+  <h1>MR Assessment to Define Brain Abnormalities in Very Preterm Infants at Term</h1>
+  <h2>Panda Protocol</h2>
+  <br>
+  <h2>Cerebral WM Score</h2>
+  <fieldset>
+    <legend>Cystic Lesions</legend>
+    <input type='radio' name='CLWM' value=0 onclick='myFunction(this.value,this.name)'>None<br>
+    <input type='radio' name='CLWM' value=1 onclick='myFunction(this.value,this.name)'>Focal Unilateral<br>
+    <input type='radio' name='CLWM' value=2 onclick='myFunction(this.value,this.name)'>Focal Bilateral<br>
+    <input type='radio' name='CLWM' value=3 onclick='myFunction(this.value,this.name)'>Extensive Unilateral<br>
+    <input type='radio' name='CLWM' value=4 onclick='myFunction(this.value,this.name)'>Extensive Bilateral<br>
+  </fieldset>
+  <fieldset>
+    <legend>Focal Signal Abnormality</legend>
+    <input type='radio' name='FSAWM' value=0 onclick='myFunction(this.value,this.name)'>None<br>
+    <input type='radio' name='FSAWM' value=1 onclick='myFunction(this.value,this.name)'>Focal Punctate<br>
+    <input type='radio' name='FSAWM' value=2 onclick='myFunction(this.value,this.name)'>Extensive Punctate<br>
+    <input type='radio' name='FSAWM' value=3 onclick='myFunction(this.value,this.name)'>Linear<br>
+  </fieldset>
+  <fieldset>
+    <legend>Myelination Delay</legend>
+    <input type='radio' name='MDWM' value=0 onclick='myFunction(this.value,this.name)'>PLIC and Corona Radiata<br>
+    <input type='radio' name='MDWM' value=1 onclick='myFunction(this.value,this.name)'>PLIC Only<br>
+    <input type='radio' name='MDWM' value=2 onclick='myFunction(this.value,this.name)'>Minimal<br>
+  </fieldset>
+  <fieldset>
+    <legend>Thinning of the Corpus Callosum</legend>
+    <input type='radio' name='CCWM' value=0 onclick='myFunction(this.value,this.name)'>None<br>
+    <input type='radio' name='CCWM' value=1 onclick='myFunction(this.value,this.name)'>Genu/Body less than 1.3mm OR splenium less than 2mm<br>
+    <input type='radio' name='CCWM' value=2 onclick='myFunction(this.value,this.name)'>Genu/Body less than 1.3mm AND splenium less than 2mm<br>
+  </fieldset>
+  <fieldset>
+    <legend>Dilated Lateral Ventricles</legend>
+    <input type='radio' name='LVWM' value=0 onclick='myFunction(this.value,this.name)'>Both sides less than 7.5mm<br>
+    <input type='radio' name='LVWM' value=1 onclick='myFunction(this.value,this.name)'>One side between 7.5 and 10mm<br>
+    <input type='radio' name='LVWM' value=2 onclick='myFunction(this.value,this.name)'>Both sides between 7.5 and 10mm or one side greater than 10mm<br>
+    <input type='radio' name='LVWM' value=3 onclick='myFunction(this.value,this.name)'>Both sides greater than 10 mm<br>
+  </fieldset>
+  <fieldset>
+    <legend>Volume Reduction</legend>
+    <input type='radio' name='VRWM' value=0 onclick='myFunction(this.value,this.name)'>cBPW greater than 77mm<br>
+    <input type='radio' name='VRWM' value=1 onclick='myFunction(this.value,this.name)'>cBPW between 77 and 72mm<br>
+    <input type='radio' name='VRWM' value=2 onclick='myFunction(this.value,this.name)'>cBPW between 72 and 67mm<br>
+    <input type='radio' name='VRWM' value=3 onclick='myFunction(this.value,this.name)'>cBPW less than 67mm<br>
+  </fieldset>
+<br>
+<h2>Cortical GM</h2>
+<fieldset>
+  <legend>Signal Abnormality</legend>
+  <input type='radio' name='SAGM' value=0 onclick='myFunction(this.value,this.name)'>None<br>
+  <input type='radio' name='SAGM' value=1 onclick='myFunction(this.value,this.name)'>Focal Unilateral<br>
+  <input type='radio' name='SAGM' value=2 onclick='myFunction(this.value,this.name)'>Focal Bilateral<br>
+  <input type='radio' name='SAGM' value=3 onclick='myFunction(this.value,this.name)'>Extensive Unilateral<br>
+  <input type='radio' name='SAGM' value=4 onclick='myFunction(this.value,this.name)'>Extensive Bilateral<br>
+</fieldset>
+<fieldset>
+  <legend>Gyral Maturation</legend>
+  <input type='radio' name='GMGM' value=0 onclick='myFunction(this.value,this.name)'>Delay less than 2 weeks<br>
+  <input type='radio' name='GMGM' value=1 onclick='myFunction(this.value,this.name)'>Delay between 2 and 4 weeks<br>
+  <input type='radio' name='GMGM' value=2 onclick='myFunction(this.value,this.name)'>Delay is greater than 4 weeks<br>
+</fieldset>
+<fieldset>
+  <legend>Increased Extracerebral Space</legend>
+  <input type='radio' name='IESGM' value=0 onclick='myFunction(this.value,this.name)'>IHD less than 4 mm<br>
+  <input type='radio' name='IESGM' value=1 onclick='myFunction(this.value,this.name)'>IHD between 4 and 5mm<br>
+  <input type='radio' name='IESGM' value=2 onclick='myFunction(this.value,this.name)'>IHD between 5 and 6mm<br>
+  <input type='radio' name='IESGM' value=3 onclick='myFunction(this.value,this.name)'>IHD greater than 6mm<br>
+</fieldset>
+<br>
+<h2>Deep GM</h2>
+<fieldset>
+  <legend>Signal Abnormality</legend>
+  <input type='radio' name='SADG' value=0 onclick='myFunction(this.value,this.name)'>None<br>
+  <input type='radio' name='SADG' value=1 onclick='myFunction(this.value,this.name)'>Focal Unilateral<br>
+  <input type='radio' name='SADG' value=2 onclick='myFunction(this.value,this.name)'>Focal Bilateral<br>
+  <input type='radio' name='SADG' value=3 onclick='myFunction(this.value,this.name)'>Extensive Unilateral<br>
+  <input type='radio' name='SADG' value=4 onclick='myFunction(this.value,this.name)'>Extensive Bilateral<br>
+</fieldset>
+<fieldset>
+  <legend>Volume Reduction</legend>
+  <input type='radio' name='VRDG' value=0 onclick='myFunction(this.value,this.name)'>cDGMA greater than 9.5cm2<br>
+  <input type='radio' name='VRDG' value=1 onclick='myFunction(this.value,this.name)'>cDGMA between 9.5 and 8.5cm2<br>
+  <input type='radio' name='VRDG' value=2 onclick='myFunction(this.value,this.name)'>cDGMA between 8.5 and 7.5cm2<br>
+  <input type='radio' name='VRDG' value=3 onclick='myFunction(this.value,this.name)'>cDGMA less than 7.5cm2<br>
+</fieldset>
+<br>
+<h2>Cerebellum</h2>
+<fieldset>
+  <legend>Signal Abnormality</legend>
+  <input type='radio' name='SAC' value=0 onclick='myFunction(this.value,this.name)'>None<br>
+  <input type='radio' name='SAC' value=1 onclick='myFunction(this.value,this.name)'>Punctate Unilateral<br>
+  <input type='radio' name='SAC' value=2 onclick='myFunction(this.value,this.name)'>Punctate Bilateral<br>
+  <input type='radio' name='SAC' value=3 onclick='myFunction(this.value,this.name)'>Extensive Unilateral<br>
+  <input type='radio' name='SAC' value=4 onclick='myFunction(this.value,this.name)'>Extensive Bilateral<br>
+</fieldset>
+<fieldset>
+  <legend>Volume Reduction</legend>
+  <input type='radio' name='VRC' value=0 onclick='myFunction(this.value,this.name)'>cTCD greater than 50mm<br>
+  <input type='radio' name='VRC' value=1 onclick='myFunction(this.value,this.name)'>cTCD between 50 and 47mm<br>
+  <input type='radio' name='VRC' value=2 onclick='myFunction(this.value,this.name)'>cTCD between 47 and 44mm<br>
+  <input type='radio' name='VRC' value=3 onclick='myFunction(this.value,this.name)'>cTCD less than 44mm<br>
+</fieldset>
+<br>
+<br>
+<br>
+<h2>Generated Report</h2>
+  <script>
+  var choices=[null,null,null,null,null,null,null,null,null,null,null,null,null];
+  var choiceText=[null,null,null,null,null,null,null,null,null,null,null,null,null];
+
+  function myFunction(severity,finding) {
+      switch (finding) {
+        case 'CLWM':
+          choices[0]=severity;
+          myGetText(0,severity);
+          refreshFunction();
+          break;
+        case 'FSAWM':
+          choices[1]=severity;
+          myGetText(1,severity);
+          refreshFunction();
+          break;
+        case 'MDWM':
+          choices[2]=severity;
+          myGetText(2,severity);
+          refreshFunction();
+          break;
+        case 'CCWM':
+          choices[3]=severity;
+          myGetText(3,severity);
+          refreshFunction();
+          break;
+        case 'LVWM':
+          choices[4]=severity;
+          myGetText(4,severity);
+          refreshFunction();
+          break;
+        case 'VRWM':
+          choices[5]=severity;
+          myGetText(5,severity);
+          refreshFunction();
+          break;
+        case 'SAGM':
+          choices[6]=severity;
+          myGetText(6,severity);
+          refreshFunction();
+          break;
+        case 'GMGM':
+          choices[7]=severity;
+          myGetText(7,severity);
+          refreshFunction();
+          break;
+        case 'IESGM':
+          choices[8]=severity;
+          myGetText(8,severity);
+          refreshFunction();
+          break;
+        case 'SADG':
+          choices[9]=severity;
+          myGetText(9,severity);
+          refreshFunction();
+          break;
+        case 'VRDG':
+          choices[10]=severity;
+          myGetText(10,severity);
+          refreshFunction();
+          break;
+        case 'SAC':
+          choices[11]=severity;
+          myGetText(11,severity);
+          refreshFunction();
+          break;
+        case 'VRC':
+          choices[12]=severity;
+          myGetText(12,severity);
+          refreshFunction();
+          break;
+        default:
+          choices[0]=100;
+          choiceText='ERROR!!!';
+        }
+      }
+      function myGetText (finding,severity) {
+        switch (Number(finding)) {
+          case 0:
+            switch (Number(severity)) {
+              case 0:
+                choiceText[0]='None';
+                break;
+              case 1:
+                choiceText[0]='Focal Unilateral';
+                break;
+              case 2:
+                choiceText[0]='Focal Bilateral';
+                break;
+              case 3:
+                choiceText[0]='Extensive Unilateral';
+                break;
+              case 4:
+                choiceText[0]='Extensie Bilateral';
+                break;
+            }
+          case 1:
+            switch (Number(severity)) {
+              case 0:
+                choiceText[1]='None';
+                break;
+              case 1:
+                choiceText[1]='Focal Punctate';
+                break;
+              case 2:
+                choiceText[1]='Extensive Punctate';
+                break;
+              case 3:
+                choiceText[1]='Linear';
+                break;
+              }
+          case 2:
+            switch (Number(severity)) {
+              case 0:
+                choiceText[2]='PLIC and Corona Radiata';
+                break;
+              case 1:
+                choiceText[2]='PLIC only';
+                break;
+              case 2:
+                choiceText[2]='Minimal';
+                break;
+              }
+          case 3:
+            switch (Number(severity)) {
+              case 0:
+                choiceText[3]='None';
+                break;
+              case 1:
+                choiceText[3]='Genu/Body less than 1.3mm OR splenium less than 2mm';
+                break;
+              case 2:
+                choiceText[3]='Genu/Body less than 1.3mm AND splenium less than 2mm';
+                break;
+            }
+          case 4:
+            switch (Number(severity)) {
+              case 0:
+                choiceText[4]='Both sides less than 7.5mm';
+                break;
+              case 1:
+                choiceText[4]='One side between 7.5 and 10mm';
+                break;
+              case 2:
+                choiceText[4]='Both sides between 7.5 and 10mm or one side greater than 10mm';
+                break;
+              case 3:
+                choiceText[4]='Both sides greater than 10mm'
+                break;
+            }
+          case 5:
+              switch (Number(severity)) {
+                case 0:
+                  choiceText[5]='cBPW greater than 77mm';
+                  break;
+                case 1:
+                  choiceText[5]='cBPW between 77 and 72mm';
+                  break;
+                case 2:
+                  choiceText[5]='cBPW between 72 and 67mm';
+                  break;
+                case 3:
+                  choiceText[5]='cBPW less than 67mm';
+                  break;
+              }
+          case 6:
+                switch (Number(severity)) {
+                  case 0:
+                    choiceText[6]='None';
+                    break;
+                  case 1:
+                    choiceText[6]='Focal Unilateral';
+                    break;
+                  case 2:
+                    choiceText[6]='Focal Bilateral';
+                    break;
+                  case 3:
+                    choiceText[6]='Extensive Unilateral';
+                    break;
+                  case 4:
+                    choiceText[6]='Extensive Bilateral';
+                    break;
+                }
+            case 7:
+                  switch (Number(severity)) {
+                    case 0:
+                      choiceText[7]='Delay less than 2 weeks';
+                      break;
+                    case 1:
+                      choiceText[7]='Delay between 2 and 4 weeks';
+                      break;
+                    case 2:
+                      choiceText[7]='Delay is greater than 4 weeks';
+                      break;
+                  }
+            case 8:
+                  switch (Number(severity)) {
+                    case 0:
+                      choiceText[8]='IHD less than 4 mm';
+                      break;
+                    case 1:
+                      choiceText[8]='IHD between 4 and 5mm';
+                      break;
+                    case 2:
+                      choiceText[8]='IHD between 5 and 6mm';
+                      break;
+                    case 3:
+                      choiceText[8]='IHD greater than 6mm';
+                      break;
+                  }
+            case 9:
+                  switch (Number(severity)) {
+                    case 0:
+                      choiceText[9]='None';
+                      break;
+                    case 1:
+                      choiceText[9]='Focal Unilateral';
+                      break;
+                    case 2:
+                      choiceText[9]='Focal Bilateral';
+                      break;
+                    case 3:
+                      choiceText[9]='Extensive Unilateral';
+                      break;
+                    case 4:
+                      choiceText[9]='Extensive Bilateral';
+                      break;
+                  }
+            case 10:
+                  switch (Number(severity)) {
+                    case 0:
+                      choiceText[10]='cDGMA greater than 9.5cm2';
+                      break;
+                    case 1:
+                      choiceText[10]='cDGMA between 9.5 and 8.5cm2';
+                      break;
+                    case 2:
+                      choiceText[10]='cDGMA between 8.5 and 7.5cm2';
+                      break;
+                    case 3:
+                      choiceText[10]='less than 7.5cm2';
+                      break;
+                  }
+            case 11:
+                  switch (Number(severity)) {
+                    case 0:
+                      choiceText[11]='None';
+                      break;
+                    case 1:
+                      choiceText[11]='Punctate Unilateral';
+                      break;
+                    case 2:
+                      choiceText[11]='Punctate Bilateral';
+                      break;
+                    case 3:
+                      choiceText[11]='Extensive Unilateral';
+                      break;
+                    case 4:
+                      choiceText[11]='Extensive Bilateral';
+                      break;
+                  }
+            case 12:
+                  switch (Number(severity)) {
+                    case 0:
+                      choiceText[12]='cTCD greater than 50mm';
+                      break;
+                    case 1:
+                      choiceText[12]='cTCD between 50 and 47mm';
+                      break;
+                    case 2:
+                      choiceText[12]='cTCD between 47 and 44mm';
+                      break;
+                    case 3:
+                      choiceText[12]='cTCD less than 44mm';
+                      break;
+                  }
+            default: {
+              break;
+            }
+        }
+      }
+  function ccFunction(containerid) {
+      /* Get the text field
+      var copyText = document.getElementById("results");
+      Select the text field
+      copyText.select();
+      /* Copy the text inside the text field
+      document.execCommand("copy");*/
+      /*HTMLInputElement.select("results");
+      Document.execCommand('copy');*/
+    /* var range = document.getElementById("reults").innerHTML;
+    range.select();
+    document.execCommand("copy"); */
+      /*var range = document.results.createRange();
+      var startNode = document.getElementById("results");
+      var endNode = document.getElementById("results");
+      var endOffset = document.results.length;
+      range.setStart(startNode, 0);
+      range.setEnd(endNode, endOffset);
+      range.select();
+      document.execCommand("copy"); */
+      var toCopy  = document.getElementById('results'),
+      toCopy.select();
+      document.execCommand('copy');
+
+
+    }
+  function refreshFunction() {
+    document.getElementById('zero').innerHTML = choices[0]+" - "+choiceText[0];
+    document.getElementById('one').innerHTML = choices[1]+" - "+choiceText[1];
+    document.getElementById('two').innerHTML = choices[2]+" - "+choiceText[2];
+    document.getElementById('three').innerHTML = choices[3]+" - "+choiceText[3];
+    document.getElementById('four').innerHTML = choices[4]+" - "+choiceText[4];
+    document.getElementById('five').innerHTML = choices[5]+" - "+choiceText[5];
+    document.getElementById('six').innerHTML = choices[6]+" - "+choiceText[6];
+    document.getElementById('seven').innerHTML = choices[7]+" - "+choiceText[7];
+    document.getElementById('eight').innerHTML = choices[8]+" - "+choiceText[8];
+    document.getElementById('nine').innerHTML = choices[9]+" - "+choiceText[9];
+    document.getElementById('ten').innerHTML = choices[10]+" - "+choiceText[10];
+    document.getElementById('eleven').innerHTML = choices[11]+" - "+choiceText[11];
+    document.getElementById('twelve').innerHTML = choices[12]+" - "+choiceText[12];
+    document.getElementById('CWMSTotal').innerHTML = Number(choices[0])+Number(choices[1])+Number(choices[2])+Number(choices[3])+Number(choices[4])+Number(choices[5]);
+    document.getElementById('CGMTotal').innerHTML = Number(choices[6])+Number(choices[7])+Number(choices[8]);
+    document.getElementById('DGMTotal').innerHTML = Number(choices[9])+Number(choices[10]);
+    document.getElementById('CTotal').innerHTML = Number(choices[11])+Number(choices[12]);
+    document.getElementById('thirteen').innerHTML = Number(choices[0])+Number(choices[1])+Number(choices[2])+Number(choices[3])+Number(choices[4])+Number(choices[5])+Number(choices[6])+Number(choices[7])+Number(choices[8])+Number(choices[9])+Number(choices[10])+Number(choices[11])+Number(choices[12]);
+  }
+  </script>
+
+<div id="results">
+  <p>
+    MR Assessment Tool to Define Brain Abnormalities in Very Preterm Infants at Term (1)
+  </p>
+  <p>
+    Cerebral White Matter Score - Total - <span id='CWMSTotal'></span><br>
+    Possible Total Score from 0 to 17<br>
+    Cystic Lesions - <span id='zero'></span><br>
+    Focal Signal Abnormality - <span id='one'></span><br>
+    Myelination Delay - <span id='two'></span><br>
+    Thinning of the Corpus Callosum - <span id='three'></span><br>
+    Dilated Lateral Ventricles - <span id='four'></span><br>
+    Volume Reduction - <span id='five'></span><br>
+  </p>
+  <p>
+    Cortical Gray Matter - Total - <span id='CGMTotal'></span><br>
+    Possible Total Score from 0 to 9<br>
+    Signal Abnormality - <span id='six'></span><br>
+    Gyral Maturation - <span id='seven'></span><br>
+    Increased Extracerebral Space - <span id='eight'></span><br>
+  </p>
+  <p>
+    Deep Gray Matter - Total - <span id='DGMTotal'></span><br>
+    Possible Total Score from 0 to 7<br>
+    Signal Abnormality - <span id='nine'></span><br>
+    Volume Reduction - <span id='ten'></span><br>
+  </p>
+  <p>
+    Cerebellum - Total - <span id='CTotal'></span><br>
+    Possible Total Score from 0 to 7<br>
+    Signal Abnormality - <span id='eleven'></span><br>
+    Volume Reduction - <span id='twelve'></span><br>
+  </p>
+  <p>
+    TOTAL SCORE<br>
+    -- <span id='thirteen'></span> --<br>
+    Possible Total Score 0 to 40<br>
+  </p>
+  <p>
+    1. Kidokoro, H., et al. “New MR Imaging Assessment Tool to Define Brain Abnormalities in Very Preterm Infants at Term.” AJNR. American Journal of Neuroradiology, vol. 34, no. 11, Dec. 2013, pp. 2208–14.
+  </p>
+</div>
+  <button onclick="refreshFunction()">Refresh text</button>
+  <button onclick="ccFunction()">Copy text</button>
+<div id='endnote'>
+  <br>
+  &copy; Steven Ross 2018
+  <br>
+  <br>
+  Adapted from Kidokoro, H., et al. “New MR Imaging Assessment Tool to Define Brain Abnormalities in Very Preterm Infants at Term.” AJNR. American Journal of Neuroradiology, vol. 34, no. 11, Dec. 2013, pp. 2208–14.
+  <br>
+</div>
+</body>
+</html>

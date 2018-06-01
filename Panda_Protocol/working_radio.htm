@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<heading></heading>
+<body>
+  <h2>Cerebral WM Score</h2>
+  <p id='first'></p>
+  <fieldset>
+    <legend>Cystic Lesions</legend>
+    <input type='radio' name='tn' value='None' onclick='myFunction(this.value)'>None</br>
+    <input type='radio' name='tn' value='Focal Unilateral' onclick='myFunction(this.value)'>Focal Unilateral</br>
+    <input type='radio' name='tn' value='Focal Bilateral' onclick='myFunction(this.value)'>Focal Bilateral</br>
+    <input type='radio' name='tn' value='Extensive Unilateral' onclick='myFunction(this.value)'>Extensive Unilateral</br>
+    <input type='radio' name='tn' value='Extensive Bilateral' onclick='myFunction(this.value)'>Extensive Bilateral</br>
+  </fieldset>
+  <h2>results</h2>
+  <p id='second'></p>
+
+<!--<form action="/action_page.php">
+  <input type="radio" name="browser" onclick="myFunction(this.value)" value="Internet Explorer">Internet Explorer<br>
+  <input type="radio" name="browser" onclick="myFunction(this.value)" value="Firefox">Firefox<br>
+  <input type="radio" name="browser" onclick="myFunction(this.value)" value="Opera">Opera<br>
+  <input type="radio" name="browser" onclick="myFunction(this.value)" value="Google Chrome">Google Chrome<br>
+  <input type="radio" name="browser" onclick="myFunction(this.value)" value="Safari">Safari<br><br>
+
+//  Your favorite browser is: <input type="text" id="result">
+//  <input type="submit" value="Submit form">
+//</form>-->
+
+<script>
+function myFunction(inp) {
+    document.getElementById('second').innerHTML = inp;
+}
+</script>
+
+</body>
+</html>

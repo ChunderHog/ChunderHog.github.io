@@ -1,0 +1,34 @@
+body {
+  color: #EBEBEB;
+  background-color: #323232;
+}
+
+#results {
+  font-family: garamond;
+  color: #323232;
+  background-color: #EBEBEB;
+  height: 43em;
+  width: 60%;
+  /* border: 2px solid #7D7D7D;
+  padding: 1%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  margin-right: 35%;
+  margin-left: 3%; */
+}
+
+img {
+  float: right;
+  width: 10%;
+  height: auto;
+}
+#endnote {
+  color: #A0A0A0;
+  background-color: #323232;
+  border: None;
+  padding: 0%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-right: 30%;
+  margin-left: 0%;
+}
