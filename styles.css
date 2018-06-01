@@ -1,0 +1,32 @@
+body {
+  color: #EBEBEB;
+  background-color: #323232;
+}
+
+#Disclaimer {
+  font-family: "Times New Roman";
+  font-size: small;
+  color: #EBEBEB;
+  background-color: #323232;
+  margin-top: 2%;
+  margin-bottom: 5%;
+  margin-right: 40%;
+  margin-left: 2%;
+}
+
+.links {
+  float: center;
+  color: #EBEBEB;
+  font-size: large;
+}
+
+#endnote {
+  color: #A0A0A0;
+  background-color: #323232;
+  border: None;
+  padding: 0%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-right: 30%;
+  margin-left: 0%;
+}
