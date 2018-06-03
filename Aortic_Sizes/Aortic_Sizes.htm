@@ -190,7 +190,7 @@
 
     var resulttext = "AORTIC MEASUREMENTS\r\n";
     resulttext += "\r\n"+"Body Surface Area: "+Math.round(bsa*100)/100+" m2";
-    resulttext += "\r\n"+"\r\n"+"Site"+padspace("Site",40)+"Diam (mm)"+padspace("Diam  mm ",19)+"Z-value"+padspace("Z-value",20)+"Percentile \r\n";
+    resulttext += "\r\n"+"\r\n"+"Site"+padspace("Site",40)+"Diam (mm)"+padspace("Diam  mm ",19)+" Z-value"+padspace("Z-value",20)+"Percentile \r\n";
     resulttext += "Aortic Sinus"+padspace("Aortic Sinus",40)+(choices[0].toString())+padspace((choices[0].toString()),19)+fMark(zvalues[0])+(zvalues[0].toString())+padspace((zvalues[0].toString()),20)+fixPer(percentiles[0])+"\r\n";
     resulttext += "Sinotubular Junction"+padspace("Sinotubular Junction",40)+(choices[1].toString())+padspace((choices[1].toString()),19)+fMark(zvalues[1])+(zvalues[1].toString())+padspace((zvalues[1].toString()),20)+fixPer(percentiles[1])+"\r\n";
     resulttext += "Ascending Aorta"+padspace("Ascending Aorta",40)+(choices[2].toString())+padspace((choices[2].toString()),19)+fMark(zvalues[2])+(zvalues[2].toString())+padspace((zvalues[2].toString()),20)+fixPer(percentiles[2])+"\r\n";
