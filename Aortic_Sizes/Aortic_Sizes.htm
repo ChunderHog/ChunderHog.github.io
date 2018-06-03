@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Aortic Sizes">
+  <meta name="keywords" content="pediatric radiology, aortic sizes, aorta normative values, z values, normal pediatric aortic diameters">
+  <meta name="author" content="Steven Ross">
+  <title>Aortic Size Report Including Z-Values</title>
+  <link rel="stylesheet" type="text/css" href="styles.css"/>
+</head>
+<body>
+  <h1>Aortic Size Report Including Z-Values</h1>
+  <h2>Aortic Diameter Chart Based on CT or MRI</h2>
+  <br>
+  <input type="number" step="0.01" name="height" id="height">Height
+  <select = "height_type" id="height_type">
+    <option value="cm">cm</option>
+    <option value="in">in</option>
+  </select>
+  <input type="number" step="0.01" name="weight" id="weight">Weight
+  <select = "weight_type" id="weight_type">
+    <option value="kg">kg</option>
+    <option value="lbs">lbs</option>
+  </select>
+  <br>
+  <figure>
+    <img src="/Aortic_Sizes/diagram.JPG" alt="Aortic Measurement Diagram">
+    <figcaption>Measurement Locations</figcaption>
+  </figure>
+  <fieldset>
+    <legend>Aortic Diameters in mm</legend>
+    <input type="number" name="AS" id="AS" step="0.01">Aortic Sinus<br>
+    <input type="number" name="STJ" id="STJ" step="0.01">Sino-Tubular Junction<br>
+    <input type="number" name="AA" id="AA" step="0.01">Ascending Aorta<br>
+    <input type="number" name="OBC" id="OBC" step="0.01">At the Origin of the Brachiocephalic<br>
+    <input type="number" name="FTS" id="FTS" step="0.01">First Transverse Segment<br>
+    <input type="number" name="STS" id="STS" step="0.01">Second Transverse Segment<br>
+    <input type="number" name="IR" id="IR" step="0.01">Isthmic Region<br>
+    <input type="number" name="DA" id="DA" step="0.01">Descending Aorta<br>
+    <input type="number" name="AD" id="AD" step="0.01">At the Diaphragm<br>
+  </fieldset>
+  <button onclick="refreshFunction()">Calculate</button>
+<br>
+<br>
+<br>
+<h2>Generated Report</h2>
+<script>
+  var choices=[null,null,null,null,null,null,null,null,null];
+  var zvalues=[null,null,null,null,null,null,null,null,null];
+  var percentiles=[null,null,null,null,null,null,null,null,null];
+
+  function ccFunction(containerid) {
+      /* Get the text field */
+      var copyText = document.getElementById("results");
+      /*Select the text field */
+      copyText.select();
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+    }
+
+  function GetZPercent(z) {
+
+    // z == number of standard deviations from the mean
+
+    // if z is greater than 6.5 standard deviations from the mean the
+    // number of significant digits will be outside of a reasonable range
+
+    if (z < -6.5) {
+      return (0.0);
+    }
+
+    if (z > 6.5) {
+      return (1.0);
+    }
+
+    var factK = 1;
+    var sum = 0;
+    var term = 1;
+    var k = 0;
+    var loopStop = Math.exp(-23);
+
+    while(Math.abs(term) > loopStop) {
+      term = .3989422804 * Math.pow(-1,k) * Math.pow(z,k) / (2 * k + 1) / Math.pow(2,k) * Math.pow(z,k+1) / factK;
+      sum += term;
+      k++;
+      factK *= k;
+    }
+
+    sum += 0.5;
+
+    return (sum);
+  }
+
+  function bsacalc (wt, ht, wv, hv) {
+    if (wt === "kg") {
+      if (ht === "cm") {
+        return (Math.sqrt(hv * wv / 3600));
+      }
+      else {
+        return (Math.sqrt(hv * 2.54 * wv / 3600));
+      }
+    }
+    else {
+      if (ht === "cm") {
+        return (Math.sqrt(hv * (wv * 0.453592) / 3600));
+      }
+      else {
+        return (Math.sqrt((hv * 2.54) * (wv * 0.453592) / 3600));
+      }
+    }
+  }
+
+  function padspace (stringvar,padvar) {
+    var spacevar =  padvar - stringvar.length;
+    var padded = "";
+    var i;
+    for (i = 0; i < spacevar; i++) {
+      padded += " ";
+    }
+    return (padded);
+  }
+
+  function fMark (zvv) {
+    if (((zvv <= 2) && (zvv >= -2))) {
+      return (" ");
+    }
+    else {
+      return ("*");
+    }
+  }
+
+  function fixPer(vper) {
+    if (vper === 100) {
+      return (">99%");
+    }
+    else {
+      if (vper === 0) {
+        return ("<1%");
+      }
+      else return vper.toString()+"%";
+    }
+  }
+
+  function refreshFunction() {
+
+    choices[0] = document.getElementById("AS").value;
+    choices[1] = document.getElementById("STJ").value;
+    choices[2] = document.getElementById("AA").value;
+    choices[3] = document.getElementById("OBC").value;
+    choices[4] = document.getElementById("FTS").value;
+    choices[5] = document.getElementById("STS").value;
+    choices[6] = document.getElementById("IR").value;
+    choices[7] = document.getElementById("DA").value;
+    choices[8] = document.getElementById("AD").value;
+
+    var heightvar = document.getElementById("height").value;
+    var htv = document.getElementById("height_type").value;
+    var weightvar = document.getElementById("weight").value;
+    var wtv = document.getElementById("weight_type").value;
+
+    var bsa = bsacalc(wtv,htv,weightvar,heightvar);
+
+    zvalues[0] = (choices[0] - ( 0.57 + (19.37 * Math.pow(bsa,0.5)))) / 2.38;
+    zvalues[1] = (choices[1] - (-0.03 + (16.91 * Math.pow(bsa,0.5)))) / 1.92;
+    zvalues[2] = (choices[2] - (-1.33 + (18.6  * Math.pow(bsa,0.5)))) / 1.99;
+    zvalues[3] = (choices[3] - (-3.38 + (20.07 * Math.pow(bsa,0.5)))) / 1.69;
+    zvalues[4] = (choices[4] - (-3.52 + (18.66 * Math.pow(bsa,0.5)))) / 1.63;
+    zvalues[5] = (choices[5] - (-2.63 + (16.5  * Math.pow(bsa,0.5)))) / 1.31;
+    zvalues[6] = (choices[6] - (-3.37 + (16.52 * Math.pow(bsa,0.5)))) / 1.46;
+    zvalues[7] = (choices[7] - (-1.12 + (14.42 * Math.pow(bsa,0.5)))) / 1.64;
+    zvalues[8] = (choices[8] - ( 1.27 + (9.89  * Math.pow(bsa,0.5)))) / 1.34;
+
+    percentiles[0] = GetZPercent(zvalues[0])*100;
+    percentiles[1] = GetZPercent(zvalues[1])*100;
+    percentiles[2] = GetZPercent(zvalues[2])*100;
+    percentiles[3] = GetZPercent(zvalues[3])*100;
+    percentiles[4] = GetZPercent(zvalues[4])*100;
+    percentiles[5] = GetZPercent(zvalues[5])*100;
+    percentiles[6] = GetZPercent(zvalues[6])*100;
+    percentiles[7] = GetZPercent(zvalues[7])*100;
+    percentiles[8] = GetZPercent(zvalues[8])*100;
+
+    //round the Values
+    var i;
+    for (i=0; i < 9; i++) {
+      choices[i]=Math.round(choices[i]*10)/10;
+      zvalues[i]=Math.round(zvalues[i]*100)/100;
+      percentiles[i]=Math.round(percentiles[i]*10)/10;
+    }
+
+    var resulttext = "AORTIC MEASUREMENTS\r\n";
+    resulttext += "\r\n"+"Body Surface Area: "+Math.round(bsa*100)/100+" m2";
+    resulttext += "\r\n"+"\r\n"+"Site"+padspace("Site",40)+"Diam (mm)"+padspace("Diam  mm ",19)+"Z-value"+padspace("Z-value",20)+"Percentile \r\n";
+    resulttext += "Aortic Sinus"+padspace("Aortic Sinus",40)+(choices[0].toString())+padspace((choices[0].toString()),19)+fMark(zvalues[0])+(zvalues[0].toString())+padspace((zvalues[0].toString()),20)+fixPer(percentiles[0])+"\r\n";
+    resulttext += "Sinotubular Junction"+padspace("Sinotubular Junction",40)+(choices[1].toString())+padspace((choices[1].toString()),19)+fMark(zvalues[1])+(zvalues[1].toString())+padspace((zvalues[1].toString()),20)+fixPer(percentiles[1])+"\r\n";
+    resulttext += "Ascending Aorta"+padspace("Ascending Aorta",40)+(choices[2].toString())+padspace((choices[2].toString()),19)+fMark(zvalues[2])+(zvalues[2].toString())+padspace((zvalues[2].toString()),20)+fixPer(percentiles[2])+"\r\n";
+    resulttext += "At Brachiocephalic Artery"+padspace("At Brachiocephalic Artery",40)+(choices[3].toString())+padspace((choices[3].toString()),19)+fMark(zvalues[3])+(zvalues[3].toString())+padspace((zvalues[3].toString()),20)+fixPer(percentiles[3])+"\r\n";
+    resulttext += "First Transverse Segment"+padspace("First Transverse Segment",40)+(choices[4].toString())+padspace((choices[4].toString()),19)+fMark(zvalues[4])+(zvalues[4].toString())+padspace((zvalues[4].toString()),20)+fixPer(percentiles[4])+"\r\n";
+    resulttext += "Second Transverse Segment"+padspace("Second Transverse Segment",40)+(choices[5].toString())+padspace((choices[5].toString()),19)+fMark(zvalues[5])+(zvalues[5].toString())+padspace((zvalues[5].toString()),20)+fixPer(percentiles[5])+"\r\n";
+    resulttext += "Isthmic Region"+padspace("Isthmic Region",40)+(choices[6].toString())+padspace((choices[6].toString()),19)+fMark(zvalues[6])+(zvalues[6].toString())+padspace((zvalues[6].toString()),20)+fixPer(percentiles[6])+"\r\n";
+    resulttext += "Descending Aorta"+padspace("Descending Aorta",40)+(choices[7].toString())+padspace((choices[7].toString()),19)+fMark(zvalues[7])+(zvalues[7].toString())+padspace((zvalues[7].toString()),20)+fixPer(percentiles[7])+"\r\n";
+    resulttext += "At the Diaphragm"+padspace("At the Diaphragm",40)+(choices[8].toString())+padspace((choices[8].toString()),19)+fMark(zvalues[8])+(zvalues[8].toString())+padspace((zvalues[8].toString()),20)+fixPer(percentiles[8])+"\r\n";
+    resulttext += "\r\n"
+    resulttext += "* indicates an abnormal z-value"
+    resulttext += "\r\n"+"\r\n";
+    resulttext += "1. Kaiser, Thomas, et al. “Normal Values for Aortic Diameters in Children and Adolescents--Assessment in Vivo by Contrast-Enhanced CMR-Angiography.” Journal of Cardiovascular Magnetic Resonance: Official Journal of the Society for Cardiovascular Magnetic Resonance, vol. 10, Dec. 2008, p. 56.";
+
+    document.getElementById("results").innerHTML = resulttext;
+  }
+</script>
+
+<textarea id="results">
+</textarea>
+<br>
+<br>
+  <button onclick="refreshFunction()">Refresh text</button>
+  <button onclick="ccFunction()">Copy text</button>
+<div id="endnote">
+  <br>
+  &copy; Steven Ross 2018
+  <br>
+  <br>
+  Adapted from Kaiser, Thomas, et al. “Normal Values for Aortic Diameters in Children and Adolescents--Assessment in Vivo by Contrast-Enhanced CMR-Angiography.” Journal of Cardiovascular Magnetic Resonance: Official Journal of the Society for Cardiovascular Magnetic Resonance, vol. 10, Dec. 2008, p. 56. PubMed, doi:10.1186/1532-429X-10-56.
+
+  <br>
+</div>
+</body>
+</html>
