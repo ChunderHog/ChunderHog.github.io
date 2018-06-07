@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Renal Sizes">
+  <meta name="keywords" content="pediatric radiology, renal sizes, normal renal lengths, z values, normal kidney size">
+  <meta name="author" content="Steven Ross">
+  <title>Renal Size Report Including Z-Values</title>
+  <link rel="stylesheet" type="text/css" href="styles.css"/>
+</head>
+<body>
+  <h1>Renal Length Report Including Z-Values and Assessment of Symmetry</h1>
+  <br>
+  <input id="dob" type="date">Date of Birth<br>
+  <fieldset>
+    <legend>Renal Lengths in cm</legend>
+    <input type="number" step="0.01" name="right" id="right">Right<br>
+    <input type="number" step="0.01" name="left" id="left">Left<br>
+  </fieldset>
+  <br>
+  <button onclick="refreshFunction()">Generate</button>
+<br>
+<br>
+<br>
+<h2>Generated Report</h2>
+<script>
+  var vlengths=[null,null];
+  var zvalues=[null,null];
+  var percentiles=[null,null];
+
+  function ccFunction(containerid) {
+      /* Get the text field */
+      var copyText = document.getElementById("results");
+      /*Select the text field */
+      copyText.select();
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+    }
+
+  function GetZPercent(z) {
+
+    // z == number of standard deviations from the mean
+
+    // if z is greater than 6.5 standard deviations from the mean the
+    // number of significant digits will be outside of a reasonable range
+
+    if (z < -6.5) {
+      return (0.0);
+    }
+
+    if (z > 6.5) {
+      return (1.0);
+    }
+
+    var factK = 1;
+    var sum = 0;
+    var term = 1;
+    var k = 0;
+    var loopStop = Math.exp(-23);
+
+    while(Math.abs(term) > loopStop) {
+      term = .3989422804 * Math.pow(-1,k) * Math.pow(z,k) / (2 * k + 1) / Math.pow(2,k) * Math.pow(z,k+1) / factK;
+      sum += term;
+      k++;
+      factK *= k;
+    }
+
+    sum += 0.5;
+
+    return (sum);
+  }
+
+
+  function padspace (stringvar,padvar) {
+    var spacevar =  padvar - stringvar.length;
+    var padded = "";
+    var i;
+    for (i = 0; i < spacevar; i++) {
+      padded += " ";
+    }
+    return (padded);
+  }
+
+
+  function fixPer(vper) {
+    if (vper === 100) {
+      return (">99%");
+    }
+    else {
+      if (vper === 0) {
+        return ("<1%");
+      }
+      else return vper.toString()+"%";
+    }
+  }
+
+  function withinNl (vz) {
+    if (vz > 2) {
+        return ("This value is above normal limits being "+vz+" standard deviations above normal. ");
+      }
+      else {
+        if (vz < -2) {
+        return ("This value is below normal limits being "+Math.abs(vz)+" standard deviations below normal. ");
+      }
+        else {
+        return ("This value is within normal limits for the patient's age. ");
+      }
+    }
+  }
+
+  function symmetrySent () {
+    if ((vlengths[0] - vlengths[1]) > 1) {
+        return ("There is asymmetry with the right kidney "+Math.round((vlengths[0]-vlengths[1])*10)/10+" cm larger than the left. ");
+      }
+      else {
+        if ((vlengths[0] - vlengths[1]) < -1) {
+        return ("There is asymmetry with the left kidney "+Math.round((vlengths[1]-vlengths[0])*10)/10+" cm larger than the right. ");
+        }
+        else {
+        return ("The kidneys are symmetric in length being 1 cm or less discrepant in length. ");
+      }
+    }
+  }
+
+
+  function refreshFunction() {
+
+    var bday = document.getElementById("dob").value;
+    var birthday = +new Date(bday);
+    var datenow = Date.now();
+    console.log("birthday: " + birthday);
+    console.log("datenow: " + datenow);
+    var ageDifMs = datenow - birthday;
+    var varage = ageDifMs;
+    console.log("age output: " + varage);
+
+    //                 ms to sec to min to hr to day to month
+    var vagemonth = varage / 1000 / 60 / 60 / 24 / 30.4375;
+    console.log("age in months: " + vagemonth);
+
+    vlengths[0] = document.getElementById("right").value;
+    vlengths[1] = document.getElementById("left").value;
+
+    //do different calcs below 1year and other above 1year
+    if (vagemonth <= 12) {
+      zvalues[0] = (vlengths[0] - ((0.2 * vagemonth) + 4)) / 0.55;
+      zvalues[1] = (vlengths[1] - ((0.2 * vagemonth) + 4)) / 0.55;
+    }
+    else {
+      zvalues[0] = (vlengths[0] - ((0.3 * (vagemonth / 12)) + 6)) / 0.78;
+      zvalues[1] = (vlengths[1] - ((0.3 * (vagemonth / 12)) + 6)) / 0.78;
+    }
+
+    percentiles[0] = GetZPercent(zvalues[0])*100;
+    percentiles[1] = GetZPercent(zvalues[1])*100;
+
+    //round the Values
+    var i;
+    for (i=0; i < 2; i++) {
+      vlengths[i]=Math.round(vlengths[i]*10)/10;
+      zvalues[i]=Math.round(zvalues[i]*10)/10;
+      percentiles[i]=Math.round(percentiles[i]*10)/10;
+    }
+
+    var resulttext = "Renal Lengths\r\n"+"\r\n";
+    resulttext += "The right kidney measures "+vlengths[0]+" cm. "+"This is at the "+fixPer(percentiles[0])+" percentile. "+withinNl(zvalues[0])+"The left kidney measures "+vlengths[1]+" cm. "+"This is at the "+fixPer(percentiles[1])+" percentile. "+withinNl(zvalues[1]);
+    resulttext += symmetrySent();
+    resulttext += "";
+    resulttext += "\r\n";
+
+    document.getElementById("results").innerHTML = resulttext;
+  }
+</script>
+
+<textarea id="results">
+</textarea>
+<br>
+<br>
+  <button onclick="refreshFunction()">Refresh text</button>
+  <button onclick="ccFunction()">Copy text</button>
+  <br>
+  <br>
+  <figure>
+    <img src="/Aortic_Sizes/other.JPG" alt="Alternate Renal Length Determinations">
+    <figcaption>Alternate Renal Length Determinations</figcaption>
+  </figure>
+<div id="endnote">
+  <br>
+  &copy; Steven Ross 2018
+  <br>
+  <br>
+    <ol>
+      <li>Akhavan, Ardavan, et al. “Simple, Age-Based Formula for Predicting Renal Length in Children.” Urology, vol. 78, no. 2, Aug. 2011, pp. 405–10.</li>
+      <li>Khazaei, Mahmood R., et al. “Renal Length Discrepancy by Ultrasound Is a Reliable Predictor of an Abnormal DMSA Scan in Children.” Pediatric Nephrology (Berlin, Germany), vol. 23, no. 1, Jan. 2008, pp. 99–105.</li>
+    </ol>
+  <br>
+</div>
+</body>
+</html>
