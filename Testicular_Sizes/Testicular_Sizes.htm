@@ -2,20 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="Renal Sizes">
-  <meta name="keywords" content="pediatric radiology, renal sizes, normal renal lengths, z values, normal kidney size">
+  <meta name="description" content="Testicular Sizes">
+  <meta name="keywords" content="pediatric radiology, testicle sizes, normal testicular lengths, z values, normal testicle size">
   <meta name="author" content="Steven Ross">
-  <title>Renal Size Report Including Z-Values</title>
+  <title>Testicle Size Report Including Z-Values</title>
   <link rel="stylesheet" type="text/css" href="styles.css"/>
 </head>
 <body>
-  <h1>Renal Length Report Including Z-Values and Assessment of Symmetry</h1>
+  <h1>Testicular Size Report Including Volumes, Z-Values, and Assessment of Symmetry</h1>
   <br>
   <input id="dob" type="date">Date of Birth<br>
   <fieldset>
-    <legend>Renal Lengths in cm</legend>
-    <input type="number" step="0.01" name="right" id="right">Right<br>
-    <input type="number" step="0.01" name="left" id="left">Left<br>
+    <legend><strong>RIGHT</strong> Testicular Dimensions (Any Order) in cm</legend>
+    <input type="number" step="0.01" name="RD1" id="RD1">First<br>
+    <input type="number" step="0.01" name="RD2" id="RD2">Second<br>
+    <input type="number" step="0.01" name="RD3" id="RD3">Third<br>
+  </fieldset>
+  <fieldset>
+    <legend><strong>LEFT</strong> Testicular Dimensions (Any Order) in cm</legend>
+    <input type="number" step="0.01" name="LD1" id="LD1">First<br>
+    <input type="number" step="0.01" name="LD2" id="LD2">Second<br>
+    <input type="number" step="0.01" name="LD3" id="LD3">Third<br>
   </fieldset>
   <br>
   <button onclick="refreshFunction()">Generate</button>
@@ -24,9 +31,15 @@
 <br>
 <h2>Generated Report</h2>
 <script>
+
+  var agearray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+  var meanarray = [0.48,0.46,0.51,0.51,0.58,0.63,0.65,0.66,0.79,0.97,1.33,2.33,4.42,7.31,8.69,11.51,12.12,13.73];
+  var sdarray = [0.13,0.09,0.15,0.16,0.15,0.26,0.17,0.22,0.46,0.51,1.03,1.77,2.66,4.11,2.91,3.03,2.8,3.51];
+
   var vlengths=[null,null];
   var zvalues=[null,null];
   var percentiles=[null,null];
+  var vnumbers=[null,null,null,null,null,null];
 
   function ccFunction(containerid) {
       /* Get the text field */
@@ -36,6 +49,23 @@
       /* Copy the text inside the text field */
       document.execCommand("copy");
     }
+
+  function linterp (x1,x2,xv,y1,y2) {
+    var xfrac = (xv-x1)/(x2-x1);
+    return ((xfrac * (y2-y1)) + y1);
+  }
+
+  function getmean (a) {
+    var i = Math.trunc(a/12);
+    i -= 1;
+    return (linterp(agearray[i],agearray[i+1],a/12,meanarray[(i)],meanarray[i+1]));
+  }
+
+  function getsd (a) {
+    var i = Math.trunc(a/12);
+    i-=1;
+    return (linterp(agearray[i],agearray[i+1],a/12,sdarray[(i)],sdarray[i+1])+(0.1*meanarray[i]));
+  }
 
   function GetZPercent(z) {
 
@@ -83,12 +113,12 @@
 
 
   function fixPer(vper) {
-    if (vper === 100) {
-      return (">99%");
+    if (vper > 99.9) {
+      return (">99.9%");
     }
     else {
-      if (vper === 0) {
-        return ("<1%");
+      if (vper < 0.1) {
+        return ("<0.1%");
       }
       else return vper.toString()+"%";
     }
@@ -109,15 +139,15 @@
   }
 
   function symmetrySent () {
-    if ((vlengths[0] - vlengths[1]) > 1) {
-        return ("There is asymmetry with the right kidney "+Math.round((vlengths[0]-vlengths[1])*10)/10+" cm larger than the left. ");
+    if ((vvolright - vvolleft)/vvolright > 0.2) {
+        return ("There is asymmetry with the right testicle "+Math.round((vvolright - vvolleft)/vvolright*100)+"% larger than the left. ");
       }
       else {
-        if ((vlengths[0] - vlengths[1]) < -1) {
-        return ("There is asymmetry with the left kidney "+Math.round((vlengths[1]-vlengths[0])*10)/10+" cm larger than the right. ");
+        if ((vvolright - vvolleft)/vvolright < -0.2) {
+        return ("There is asymmetry with the left testicle "+Math.abs(Math.round((vvolright - vvolleft)/vvolright*100))+"% larger than the right. ");
         }
         else {
-        return ("The kidneys are symmetric in length being 1 cm or less discrepant in length. ");
+        return ("The testicles are symmetric in volume being 20% cm or less discrepant in volume. ");
       }
     }
   }
@@ -128,28 +158,45 @@
     var bday = document.getElementById("dob").value;
     var birthday = +new Date(bday);
     var datenow = Date.now();
-    console.log("birthday: " + birthday);
-    console.log("datenow: " + datenow);
     var ageDifMs = datenow - birthday;
     var varage = ageDifMs;
-    console.log("age output: " + varage);
 
     //                 ms to sec to min to hr to day to month
     var vagemonth = varage / 1000 / 60 / 60 / 24 / 30.4375;
+
     console.log("age in months: " + vagemonth);
+    console.log("should be 25:"+linterp(1,2,1.5,20,30));
+    console.log("should be mean at 12 months: "+getmean(12));
+    console.log("should be mean at 24 months: "+getmean(24));
+    console.log("should be mean between 12 and 24: "+getmean(18));
+    console.log("should be sd at 12 months: "+getsd(12));
+    console.log("should be sd at 24 months: "+getsd(24));
+    console.log("should be sd between 12 and 24: "+getsd(18));
 
-    vlengths[0] = document.getElementById("right").value;
-    vlengths[1] = document.getElementById("left").value;
+    vnumbers[0] = document.getElementById("RD1").value;
+    vnumbers[1] = document.getElementById("RD2").value;
+    vnumbers[2] = document.getElementById("RD3").value;
+    vnumbers[3] = document.getElementById("LD1").value;
+    vnumbers[4] = document.getElementById("LD2").value;
+    vnumbers[5] = document.getElementById("LD3").value;
+    vvolright = 0.71 * vnumbers[0] * vnumbers[1] * vnumbers[2];
+    vvolleft = 0.71 * vnumbers[3] *vnumbers[4] * vnumbers[5];
 
-    //do different calcs below 1year and other above 1year
+
+    //do different calcs below 1year and above 18 years
     if (vagemonth <= 12) {
-      zvalues[0] = (vlengths[0] - ((0.2 * vagemonth) + 4)) / 0.55;
-      zvalues[1] = (vlengths[1] - ((0.2 * vagemonth) + 4)) / 0.55;
+      vagemonth = 12;
     }
     else {
-      zvalues[0] = (vlengths[0] - ((0.3 * (vagemonth / 12)) + 6)) / 0.78;
-      zvalues[1] = (vlengths[1] - ((0.3 * (vagemonth / 12)) + 6)) / 0.78;
+        if (vagemonth >= 216) {
+          vagemonth = 216;
+        }
     }
+
+    zvalues[0] = (vvolright - getmean(vagemonth)) / getsd(vagemonth);
+    zvalues[1] = (vvolleft - getmean(vagemonth)) / getsd(vagemonth);
+    console.log("zvalue 0: "+zvalues[0]);
+    console.log("zvalue 1: "+zvalues[1]);
 
     percentiles[0] = GetZPercent(zvalues[0])*100;
     percentiles[1] = GetZPercent(zvalues[1])*100;
@@ -157,13 +204,21 @@
     //round the Values
     var i;
     for (i=0; i < 2; i++) {
-      vlengths[i]=Math.round(vlengths[i]*10)/10;
       zvalues[i]=Math.round(zvalues[i]*10)/10;
       percentiles[i]=Math.round(percentiles[i]*10)/10;
     }
+    vvolright=Math.round(vvolright*10)/10;
+    vvolleft=Math.round(vvolleft*10)/10;
+    vnumbers[0]=Math.round(vnumbers[0]*10)/10;
+    vnumbers[1]=Math.round(vnumbers[1]*10)/10;
+    vnumbers[2]=Math.round(vnumbers[2]*10)/10;
+    vnumbers[3]=Math.round(vnumbers[3]*10)/10;
+    vnumbers[4]=Math.round(vnumbers[4]*10)/10;
+    vnumbers[5]=Math.round(vnumbers[5]*10)/10;
 
-    var resulttext = "Renal Lengths\r\n"+"\r\n";
-    resulttext += "The right kidney measures "+vlengths[0]+" cm. "+"This is at the "+fixPer(percentiles[0])+" percentile. "+withinNl(zvalues[0])+"The left kidney measures "+vlengths[1]+" cm. "+"This is at the "+fixPer(percentiles[1])+" percentile. "+withinNl(zvalues[1]);
+    var resulttext = "Testicular Sizes\r\n"+"\r\n";
+    resulttext += "The right testicle measures "+vnumbers[0]+" x "+vnumbers[1]+" x "+vnumbers[2]+" cm. This corresponds to a volume of "+vvolright+" ml. "+"This is at the "+fixPer(percentiles[0])+" percentile. "+withinNl(zvalues[0]);
+    resulttext += "The left testicle measures "+vnumbers[3]+" x "+vnumbers[4]+" x "+vnumbers[5]+" cm. This corresponds to a volume of "+vvolleft+" ml. "+"This is at the "+fixPer(percentiles[1])+" percentile. "+withinNl(zvalues[1]);
     resulttext += symmetrySent();
     resulttext += "";
     resulttext += "\r\n";
@@ -180,18 +235,15 @@
   <button onclick="ccFunction()">Copy text</button>
   <br>
   <br>
-  <figure>
-    <img src="/Renal_Sizes/other.JPG" alt="Alternate Renal Length Determinations">
-    <figcaption>Alternate Renal Length Determinations</figcaption>
-  </figure>
 <div id="endnote">
   <br>
-  &copy; Steven Ross 2018
+  &copy; Steven Ross 2018<br>
   <br>
+  Note - Asymmetry assessment is based on a 20% threshold of volume asymmetry. Standard deviations also include a 10% estimation of interoperator variability since the standard deviations were obtained by one ultrasound operator.<br>
   <br>
     <ol>
-      <li>Akhavan, Ardavan, et al. “Simple, Age-Based Formula for Predicting Renal Length in Children.” Urology, vol. 78, no. 2, Aug. 2011, pp. 405–10.</li>
-      <li>Khazaei, Mahmood R., et al. “Renal Length Discrepancy by Ultrasound Is a Reliable Predictor of an Abnormal DMSA Scan in Children.” Pediatric Nephrology (Berlin, Germany), vol. 23, no. 1, Jan. 2008, pp. 99–105.</li>
+      <li>Goede, J., et al. “Normative Values for Testicular Volume Measured by Ultrasonography in a Normal Population from Infancy to Adolescence.” Hormone Research in Paediatrics, vol. 76, no. 1, 2011, pp. 56–64.</li>
+      <li>Poon, Stephen A., et al. “Testicular Asymmetry and Adolescent Varicoceles Managed Expectantly.” The Journal of Urology, vol. 183, no. 2, Feb. 2010, pp. 731–34.</li>
     </ol>
   <br>
 </div>
