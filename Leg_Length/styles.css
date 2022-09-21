@@ -17,6 +17,22 @@ body {
   margin-left: 3%; */
 }
 
+.singleRowLeft {
+  float: left;
+  margin-right: 50px;
+  width: 322px;
+}
+
+.singleRowRight {
+  float: left;
+  /*margin-right: 3000px;*/
+  width: 322px;
+}
+
+.but1 {
+  clear: both;
+}
+
 img {
   float: right;
   width: 100%;
