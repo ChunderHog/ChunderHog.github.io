@@ -243,15 +243,25 @@
     3.5 cm to 5 cm is moderate
     more than or equal to 5 cm is severe */
 
+    srfl = rfl.toString();
+    slfl = lfl.toString();
+    sfd = fd.toString();
+    srtl = rtl.toString();
+    sltl = ltl.toString();
+    std = td.toString();
+    srtot = rtot.toString();
+    sltot = ltot.toString();
+    stotd = totd.toString();
+
     var resulttext = "LEG LENGTH EXAM - SCANOGRAM\r\n"+"\r\n";
     resulttext += "HISTORY:  Leg length discrepancy evaluation."+"\r\n"+"\r\n";
     resulttext += "COMPARISON:  [None]."+"\r\n"+"\r\n";
     resulttext += "PROCEDURE COMMENTS:  Conventional radiographic scanogram was performed.  The following measurements were obtained."+"\r\n"+"\r\n";
     resulttext += "               Right       |          Left        |          Difference"+"\r\n";
-    resulttext += "Femur"+"          "+rfl+padspace(rfl,5)+"          |          "+lfl+padspace(lfl,5)+"          |          "+fd+padspace(fd,5)+"\r\n";
-    resulttext += "Tibia"+"          "+rtl+padspace(rtl,5)+"          |          "+ltl+padspace(ltl,5)+"          |          "+td+padspace(td,5)+"\r\n";
+    resulttext += "Femur"+"          "+rfl+padspace(srfl,5)+"       |          "+lfl+padspace(slfl,5)+"       |          "+fd+padspace(sfd,5)+"\r\n";
+    resulttext += "Tibia"+"          "+rtl+padspace(srtl,5)+"       |          "+ltl+padspace(sltl,5)+"       |          "+td+padspace(std,5)+"\r\n";
     resulttext += "------------------------------------------------------------------------"+"\r\n";
-    resulttext += "Total"+"          "+rtot+padspace(rtot,5)+"         |          "+ltot+padspace(ltot,5)+"         |          "+totd+padspace(totd,5)+"\r\n"+"\r\n";
+    resulttext += "Total"+"          "+rtot+padspace(srtot,5)+"       |          "+ltot+padspace(sltot,5)+"       |          "+totd+padspace(stotd,5)+"\r\n"+"\r\n";
     resulttext += "Femur = from the top of the femoral head to the medial femoral condyle"+"\r\n";
     resulttext += "Tibia = from the medial femoral condyle to the center of the tibial plafond"+"\r\n";
     resulttext += "Total = femur plus tibia"+"\r\n"+"\r\n";
