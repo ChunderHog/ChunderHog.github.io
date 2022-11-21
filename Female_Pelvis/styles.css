@@ -17,6 +17,22 @@ body {
   margin-left: 3%; */
 }
 
+.singleRowLeft {
+  float: left;
+  margin-right: 50px;
+  width: 322px;
+}
+
+.singleRowRight {
+  float: left;
+  /*margin-right: 3000px;*/
+  width: 322px;
+}
+
+.onecolumn {
+  clear: both;
+}
+
 img {
   float: right;
   width: 100%;
@@ -29,6 +45,6 @@ img {
   padding: 0%;
   margin-top: 5%;
   margin-bottom: 5%;
-  margin-right: 30%;
+  margin-right: 5%;
   margin-left: 0%;
 }

@@ -16,28 +16,31 @@
   <h3>Leave any unknown data blank and it will be ignored.</h3>
   <br>
   <input id="dob" type="date">Date of Birth<br>
-  <fieldset class="ovaries">
+  <br>
+  <fieldset class="singleRowLeft">
     <legend><strong>RIGHT</strong> Ovarian Dimensions (Any Order) in cm</legend>
     <input type="number" step="0.01" name="RD1" id="RD1">First<br>
     <input type="number" step="0.01" name="RD2" id="RD2">Second<br>
     <input type="number" step="0.01" name="RD3" id="RD3">Third<br>
   </fieldset>
-  <fieldset class="ovaries">
+  <fieldset class="singleRowRight">
     <legend><strong>LEFT</strong> Ovarian Dimensions (Any Order) in cm</legend>
     <input type="number" step="0.01" name="LD1" id="LD1">First<br>
     <input type="number" step="0.01" name="LD2" id="LD2">Second<br>
     <input type="number" step="0.01" name="LD3" id="LD3">Third<br>
   </fieldset>
-  <fieldset>
-    <legend>Uterine Dimensions (Any Order) in cm</legend>
-    <input type="number" step="0.01" name="UD1" id="UD1">First<br>
-    <input type="number" step="0.01" name="UD2" id="UD2">Second<br>
-    <input type="number" step="0.01" name="UD3" id="UD3">Third<br>
-  </fieldset>
-  <fieldset>
-    <legend>Endometrial Stripe Thickness in mm</legend>
-    <input type="number" step="0.01" name="ET" id="ET">Thickness<br>
-  </fieldset>
+  <div class="onecolumn">
+    <fieldset>
+      <legend>Uterine Dimensions (Any Order) in cm</legend>
+      <input type="number" step="0.01" name="UD1" id="UD1">First<br>
+      <input type="number" step="0.01" name="UD2" id="UD2">Second<br>
+      <input type="number" step="0.01" name="UD3" id="UD3">Third<br>
+    </fieldset>
+    <fieldset>
+      <legend>Endometrial Stripe Thickness in mm</legend>
+      <input type="number" step="0.01" name="ET" id="ET">Thickness<br>
+    </fieldset>
+  </div>
   <br>
   <button onclick="refreshFunction()">Generate</button>
 <br>
@@ -45,7 +48,7 @@
 <br>
 <h2>Generated Report</h2>
 <script>
-
+  /* The age is in days. */
   var agearray = [0,15.125,45.375,90.75,243,547.875,913.125,1278.375,1643.625,2008.875,2374.125,2739.375,3104.625,3469.875,3835.125,4200.375,4565.625,4930.875,5296.125,5661.375,6026.625,6391.875,6757.125,7122.375,7487.625];
   var uterusmean = [2.4,2.4,1.3,1.1,1.6,1.1,1.2,1.3,1.4,1.1,1.3,2,2.5,2.7,6.4,20.1,31.6,40.8,48.1,45.8,54.3,48.5,53.5,53,48.2];
   var uterussd = [1.3,1.3,0.5,0.5,1.1,0.4,0.6,0.9,1.2,0.6,0.8,2.4,3.9,3.4,8,17.3,17.4,21.9,18.6,17.4,24.4,17.5,23.9,18.8,19.9];
@@ -75,16 +78,35 @@
     return ((xfrac * (y2-y1)) + y1);
   }
 
-  function getmean (a) {
-    var i = Math.trunc(a/12);
-    i -= 1;
-    return (linterp(agearray[i],agearray[i+1],a/12,meanarray[(i)],meanarray[i+1]));
+  function getmean (a,fa) {
+    if (a >= agearray[24]) {
+      return fa[24];
+    }
+    else {
+      var i = 0;
+      while (a > agearray[i]) {
+        /* finding the element that is less than the age */;
+        console.log("get mean i "+i); /*check if i is found correctly */
+        i++;
+      }
+      console.log("highest i value "+i);
+      return (linterp(agearray[i-1],agearray[i],a,fa[i-1],fa[i]));
+    }
   }
 
-  function getsd (a) {
-    var i = Math.trunc(a/12);
-    i-=1;
-    return (linterp(agearray[i],agearray[i+1],a/12,sdarray[(i)],sdarray[i+1])+(0.1*meanarray[i]));
+  function getsd (a,fa) {
+    if (a >= agearray[24]) {
+      return fa[24];
+    }
+    else {
+      var i = 0;
+      while (a > agearray[i]) {
+        /* finding the element that is less than the age */;
+        console.log("get sd i "+i); /*check if i is found correctly */
+        i++;
+      }
+      return (linterp(agearray[i-1],agearray[i],a,fa[i-1],fa[i]));
+    }
   }
 
   function GetZPercent(z) {
@@ -153,21 +175,26 @@
         return ("This value is below normal limits being "+Math.abs(vz)+" standard deviations below normal. ");
       }
         else {
-        return ("This value is within normal limits for the patient's age. ");
+          if (vz > 0) {
+            return ("This value is "+vz+" standard deviations above normal. ");
+          }
+          else {
+            return ("This value is "+Math.abs(vz)+" standard deviations below normal. ");
+          }
       }
     }
   }
 
   function symmetrySent () {
-    if ((vvolright - vvolleft)/vvolright > 0.2) {
-        return ("There is asymmetry with the right testicle "+Math.round((vvolright - vvolleft)/vvolright*100)+"% larger than the left. ");
+    if (vvolright/vvolleft > 3) {
+        return ("There is asymmetry with the right ovary "+Math.round(vvolright/vvolleft*10)/10+"X larger than the left. ");
       }
       else {
-        if ((vvolright - vvolleft)/vvolright < -0.2) {
-        return ("There is asymmetry with the left testicle "+Math.abs(Math.round((vvolright - vvolleft)/vvolright*100))+"% larger than the right. ");
+        if (vvolleft/vvolright > 3) {
+        return ("There is asymmetry with the left ovary "+Math.round(vvolleft/vvolright*10)/10+"X larger than the right. ");
         }
         else {
-        return ("The testicles are symmetric in volume being 20% cm or less discrepant in volume. ");
+        return ("The ovaries are relatively symmetric in volume being less than 3X discrepant in volume. ");
       }
     }
   }
@@ -182,17 +209,11 @@
     var varage = ageDifMs;
 
     //                 ms to sec to min to hr to day
-    var vagemonth = varage / 1000 / 60 / 60 / 24;
+    var vageday = varage / 1000 / 60 / 60 / 24;
 
-    /*console.log("age in months: " + vagemonth);
-    console.log("should be 25:"+linterp(1,2,1.5,20,30));
-    console.log("should be mean at 12 months: "+getmean(12));
-    console.log("should be mean at 24 months: "+getmean(24));
-    console.log("should be mean between 12 and 24: "+getmean(18));
-    console.log("should be sd at 12 months: "+getsd(12));
-    console.log("should be sd at 24 months: "+getsd(24));
-    console.log("should be sd between 12 and 24: "+getsd(18));*/
+    console.log("age in days"+vageday);
 
+    var vnumbers = [null,null,null,null,null,null,null,null,null,null];
     vnumbers[0] = document.getElementById("RD1").value;
     vnumbers[1] = document.getElementById("RD2").value;
     vnumbers[2] = document.getElementById("RD3").value;
@@ -212,29 +233,45 @@
 
 
     //do different calcs below 1year and above 18 years
-    if (vagemonth < 0) {
-      alert("The date of birth you chose is incorrect.  No prenatal patients!");;
+    if (vageday <= 0) {
+      alert("The date of birth you chose is incorrect.  No prenatal patients!  We will use 1 day old data.");
+      vageday = 1;
     }
     else {
-        if (vagemonth > 20 * 365.25) {
+        if (vageday > 20 * 365.25) {
           alert("For ages above 20 years, we use the 20 year old data.");
         }
     }
 
-    zvalues[0] = (vvolright - getmean(vagemonth)) / getsd(vagemonth);
-    zvalues[1] = (vvolleft - getmean(vagemonth)) / getsd(vagemonth);
+    var zvalues = [null,null,null,null];
+    zvalues[0] = (vvolright - getmean(vageday,rightovarymean)) / getsd(vageday,rightovarysd);
+    zvalues[1] = (vvolleft - getmean(vageday,leftovarymean)) / getsd(vageday,leftovarysd);
+    zvalues[2] = (vvoluterus - getmean(vageday,uterusmean)) / getsd(vageday,uterussd);
+    zvalues[3] =(EndoThick - getmean(vageday,endometriummean)) / getsd(vageday,endometriumsd);
+    console.log("right ovarian zvalue "+zvalues[0]);
+    console.log("right ovary mean volume "+getmean(vageday,rightovarymean));
+    console.log("right ovary sd "+getsd(vageday,rightovarysd));
+    console.log("right ovary below "+rightovarymean[13]);
+    console.log("right ovary volume above "+rightovarymean[14]);
+    console.log("linterp ovary vol "+linterp(agearray[13],agearray[14],vageday,rightovarymean[13],rightovarymean[14]));
+
     /*console.log("zvalue 0: "+zvalues[0]);
     console.log("zvalue 1: "+zvalues[1]);*/
 
+    var percentiles = [null,null,null,null];
     percentiles[0] = GetZPercent(zvalues[0])*100;
     percentiles[1] = GetZPercent(zvalues[1])*100;
+    percentiles[2] = GetZPercent(zvalues[2])*100;
+    percentiles[3] = GetZPercent(zvalues[3])*100;
+
 
     //round the Values
     var i;
-    for (i=0; i < 2; i++) {
+    for (i=0; i < 4; i++) {
       zvalues[i]=Math.round(zvalues[i]*10)/10;
       percentiles[i]=Math.round(percentiles[i]*10)/10;
     }
+
     vvolright=Math.round(vvolright*10)/10;
     vvolleft=Math.round(vvolleft*10)/10;
     vvoluterus=Math.round(vvoluterus*10)/10;
@@ -251,9 +288,11 @@
     vnumbers[9]=Math.round(vnumbers[9]);
 
 
-    var resulttext = "Testicular Sizes\r\n"+"\r\n";
-    resulttext += "The right testicle measures "+vnumbers[0]+" x "+vnumbers[1]+" x "+vnumbers[2]+" cm. This corresponds to a volume of "+vvolright+" ml. "+"This is at the "+fixPer(percentiles[0])+" percentile. "+withinNl(zvalues[0]);
-    resulttext += "The left testicle measures "+vnumbers[3]+" x "+vnumbers[4]+" x "+vnumbers[5]+" cm. This corresponds to a volume of "+vvolleft+" ml. "+"This is at the "+fixPer(percentiles[1])+" percentile. "+withinNl(zvalues[1]);
+    var resulttext = "Female Pelvic Organ Sizes \r\n"+"\r\n";
+    resulttext += "The right ovary measures "+vnumbers[0]+" x "+vnumbers[1]+" x "+vnumbers[2]+" cm. This corresponds to a volume of "+vvolright+" ml. "+"This is at the "+fixPer(percentiles[0])+" percentile. "+withinNl(zvalues[0]);
+    resulttext += "The left ovary measures "+vnumbers[3]+" x "+vnumbers[4]+" x "+vnumbers[5]+" cm. This corresponds to a volume of "+vvolleft+" ml. "+"This is at the "+fixPer(percentiles[1])+" percentile. "+withinNl(zvalues[1]);
+    resulttext += "The uterus measures "+vnumbers[6]+" x "+vnumbers[7]+" x "+vnumbers[8]+" cm. This corresponds to a volume of "+vvoluterus+" ml. "+"This is at the "+fixPer(percentiles[2])+" percentile. "+withinNl(zvalues[2]);
+    resulttext += "The endometrium measures "+vnumbers[9]+" mm in thickness. Endometrial thickness varies based on the phase of the menstrual cycle; however, this is at the "+fixPer(percentiles[3])+" percentile. "+withinNl(zvalues[3]);
     resulttext += symmetrySent();
     resulttext += "";
     resulttext += "\r\n";
